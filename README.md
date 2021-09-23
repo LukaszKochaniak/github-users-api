@@ -1,6 +1,6 @@
 # Github-users-api
 
-###CI
+### CI
 
 [![CI Pipeline](https://github.com/LukaszKochaniak/github-users-api/actions/workflows/github_deploy_ci.yml/badge.svg?branch=develop)](https://github.com/LukaszKochaniak/github-users-api/actions/workflows/github_deploy_ci.yml)
 
