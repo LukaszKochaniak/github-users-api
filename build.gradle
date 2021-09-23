@@ -1,0 +1,91 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'groovy'
+	id 'maven-publish'
+}
+
+group = 'com.lukkoc'
+version = '0.0.1'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.0.3'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.5.10'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
+
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.codehaus.groovy:groovy-all:3.0.9'
+	testImplementation 'org.spockframework:spock-bom:2.0-groovy-3.0'
+	testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+	testImplementation 'org.spockframework:spock-spring:2.0-groovy-3.0'
+	testImplementation 'com.h2database:h2:1.4.200'
+
+}
+
+test {
+	useJUnitPlatform()
+}
+
+publishing {
+	repositories {
+		maven {
+			name = "GitHubPackages"
+			url = "https://maven.pkg.github.com/LukaszKochaniak/github-users-api"
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
+}
+
+tasks.register("version") {
+	println version
+}
+
+tasks.register("incrementVersion") {
+	doLast {
+		def ver = version
+		String minor = ver.substring(ver.lastIndexOf('.') + 1)
+		int increment = minor.toInteger() + 1
+
+		String major = ver.substring(0, ver.lastIndexOf("."))
+		String result = buildFile.getText().replaceFirst("version = '$version'", "version = '" + major + "." + increment + "'")
+		version = "'" + major + "." + increment + "'"
+		buildFile.setText(result)
+		println "Increment version: version = $version"
+	}
+}
+
+
+configurations.all {
+	resolutionStrategy {
+		eachDependency { DependencyResolveDetails details ->
+			if (details.requested.group == 'org.codehaus.groovy') {
+				details.useVersion('3.0.9')
+			}
+		}
+	}
+}

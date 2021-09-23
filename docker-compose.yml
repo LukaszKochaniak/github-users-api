@@ -1,0 +1,26 @@
+version: '3.6'
+
+services:
+  gitusers-service:
+    build: ./
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db/gitusers
+      SPRING_DATASOURCE_USERNAME: gitusers
+      SPRING_DATASOURCE_PASSWORD: gitusers
+    depends_on:
+      - postgres-db
+
+  postgres-db:
+    image: postgres:9.6
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=gitusers
+      - POSTGRES_USER=gitusers
+      - POSTGRES_PASSWORD=gitusers

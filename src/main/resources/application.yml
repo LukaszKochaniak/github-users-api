@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: gitusers-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/gitusers
+    username: gitusers
+    password: gitusers
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+client:
+  github:
+    url: https://api.github.com/
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 50000
+        readTimeout: 50000
+        loggerLevel: full
+
+springdoc:
+  swagger-ui:
+    path: swagger-ui
+    disable-swagger-default-url: true
+  packages-to-scan: com.lukkoc.users
+  use-fqn: true
