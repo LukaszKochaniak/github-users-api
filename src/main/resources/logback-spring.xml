@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %thread [%-5level] %class{0} - %msg%n</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <springProfile name="default">
+        <root level="info">
+            <appender-ref ref="console"/>
+        </root>
+        <logger name="com.lukkoc.users" level="debug" additivity="false">
+            <appender-ref ref="console"/>
+        </logger>
+    </springProfile>
+
+</configuration>
