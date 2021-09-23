@@ -1,4 +1,4 @@
-name: Test all branches
+name: CI pipeline
 on:
   push:
     branches:

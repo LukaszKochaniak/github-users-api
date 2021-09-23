@@ -2,6 +2,7 @@ version: '3.6'
 
 services:
   gitusers-service:
+#    image: lukkochaniak/github-users-api:develop
     build: ./
     restart: always
     ports:
